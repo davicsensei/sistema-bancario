@@ -1,48 +1,59 @@
 package com.banco.model;
 
-public class Conta {
-    private int idConta;
-    private String titular;
-    private String email;
-    private double saldo = 0;
+public abstract class Conta implements IConta {
 
-    public Conta (int idConta, String titular, String email){
-        this.idConta = idConta;
-        this.titular = titular;
-        this.email = email;
+    private static final int AGENCIA_PADRAO = 1;
+    private static int SEQUENCIAL = 1;
+
+
+    protected int agencia;
+    protected  int numero;
+    protected double saldo;
+
+    public Conta(){
+        this.agencia = Conta.AGENCIA_PADRAO;
+        this.numero = SEQUENCIAL++;
+    }
+
+    @Override
+    public void sacar(double valor){
+        saldo -= valor;
+    }
+
+    @Override
+    public void depositar(double valor){
+        saldo -= valor;
+    }
+
+    @Override
+    public void transferir(double valor, Conta contaDestino){
+        this.sacar(valor);
+        contaDestino.depositar(valor);
+    }
+
+    @Override
+    public void exibirExtrato() {
+        System.out.println();
+    }
+
+    public int getAgencia() {
+        return agencia;
+    }
+
+    public int getNumero() {
+        return numero;
     }
 
     public double getSaldo() {
         return saldo;
     }
 
-    public String getEmail() {
-        return email;
+    protected void imprimirInfosComuns(){
+        System.out.printf("Agencia: %d%n",this.agencia);
+        System.out.printf("Número: %d%n",this.numero);
+        System.out.printf("Saldo: %2f%n",this.saldo);
     }
-
-    public String getTitular() {
-        return titular;
-    }
-
-    public int getIdConta() {
-        return idConta;
-    }
-
-    public void sacar(double valor){
-        if(valor <= saldo) {
-            saldo -= valor;
-        }
-    }
-
-    public void depositar(double valor){
-        if(valor > 0){
-        saldo += valor;
-        }
-    }
-
-    public void transferir(double valor, Conta contaDestino){
-
-    }
-
-
 }
+
+
+
