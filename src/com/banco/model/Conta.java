@@ -16,13 +16,18 @@ public abstract class Conta implements IConta {
     }
 
     @Override
-    public void sacar(double valor){
-        saldo -= valor;
+    public void depositar(double valor) {
+        if (valor > 0) {
+            saldo += valor;
+        }
     }
-
     @Override
-    public void depositar(double valor){
-        saldo -= valor;
+    public void sacar(double valor) {
+        if (valor > 0 && saldo >= valor) {
+            saldo -= valor;
+        } else {
+            throw new IllegalArgumentException("Saldo insuficiente ou valor inválido");
+        }
     }
 
     @Override
@@ -33,8 +38,10 @@ public abstract class Conta implements IConta {
 
     @Override
     public void exibirExtrato() {
-        System.out.println();
+        System.out.println("\n=== Extrato Conta " + this.getClass().getSimpleName() + " ===");
+        imprimirInfosComuns();
     }
+
 
     public int getAgencia() {
         return agencia;
