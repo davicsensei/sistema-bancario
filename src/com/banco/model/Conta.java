@@ -6,9 +6,9 @@ public abstract class Conta implements IConta {
     private static int SEQUENCIAL = 1;
 
 
-    protected int agencia;
-    protected  int numero;
-    protected double saldo;
+    private int agencia;
+    private  int numero;
+    private double saldo;
 
     public Conta(){
         this.agencia = Conta.AGENCIA_PADRAO;
@@ -31,14 +31,14 @@ public abstract class Conta implements IConta {
     }
 
     @Override
-    public void transferir(double valor, Conta contaDestino){
+    public void transferir(double valor, IConta destino){
         this.sacar(valor);
-        contaDestino.depositar(valor);
+        destino.depositar(valor);
     }
 
     @Override
     public void exibirExtrato() {
-        System.out.println("\n=== Extrato Conta " + this.getClass().getSimpleName() + " ===");
+        System.out.println("\n=== Extrato Conta " + this.getClass().getSimpleName() +" ===");
         imprimirInfosComuns();
     }
 
@@ -58,7 +58,7 @@ public abstract class Conta implements IConta {
     protected void imprimirInfosComuns(){
         System.out.printf("Agencia: %d%n",this.agencia);
         System.out.printf("Número: %d%n",this.numero);
-        System.out.printf("Saldo: %2f%n",this.saldo);
+        System.out.printf("Saldo: R$ %.2f%n", this.saldo);
     }
 }
 

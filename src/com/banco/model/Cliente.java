@@ -1,6 +1,7 @@
 package com.banco.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Cliente {
@@ -26,7 +27,7 @@ public class Cliente {
     }
 
     public List<IConta> getContas() {
-        return contas;
+        return Collections.unmodifiableList(contas);
     }
 
     public void exibirExtratos() {

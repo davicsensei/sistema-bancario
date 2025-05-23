@@ -1,29 +1,154 @@
 package com.banco.controller;
 
 import com.banco.model.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    private static Scanner sc = new Scanner(System.in);
+    private static List<IConta> contas = new ArrayList<>();
+
     public static void main(String[] args) {
-        Cliente cliente = new Cliente("Maria Souza", "123.456.789-00");
+        int opcao = 0;
+        while (opcao != 6) {
+            mostrarMenu();
+            opcao = sc.nextInt();
+            sc.nextLine();
+            switch (opcao) {
+                case 1:
+                    criarConta();
+                    break;
+                case 2:
+                    depositar();
+                    break;
+                case 3:
+                    sacar();
+                    break;
+                case 4:
+                    transferir();
+                    break;
+                case 5:
+                    exibirExtratos();
+                    break;
+                case 6:
+                    System.out.println("Encerrando o sistema. Obrigado!");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+        sc.close();
+    }
 
-        IConta contaCorrente = new ContaCorrente();
-        IConta contaPoupanca = new ContaPoupanca();
+    private static void mostrarMenu() {
+        System.out.println("\n==== MENU ====");
+        System.out.println("1 - Criar conta");
+        System.out.println("2 - Depositar");
+        System.out.println("3 - Sacar");
+        System.out.println("4 - Transferir");
+        System.out.println("5 - Exibir extratos");
+        System.out.println("6 - Sair");
+        System.out.print("Digite sua opção: ");
+    }
 
-        cliente.adicionarConta(contaCorrente);
-        cliente.adicionarConta(contaPoupanca);
+    private static void criarConta() {
+        System.out.println("\n-- Criar Conta --");
+        System.out.print("Tipo de conta (1 - Corrente, 2 - Poupança): ");
+        int tipo = sc.nextInt();
+        sc.nextLine();
+        IConta conta;
+        if (tipo == 1) {
+            conta = new ContaCorrente();
+        } else if (tipo == 2) {
+            conta = new ContaPoupanca();
+        } else {
+            System.out.println("Tipo de conta inválido.");
+            return;
+        }
+        contas.add(conta);
+        Conta c = (Conta) conta;
+        System.out.println("Conta criada com sucesso! Agência: " + c.getAgencia() + ", Número: " + c.getNumero());
+    }
 
-        contaCorrente.depositar(1000.0);
-        contaCorrente.sacar(200.0);
-        contaCorrente.transferir(300.0, (Conta) contaPoupanca);
-        System.out.println("-- Extrato após operações na Conta Corrente e transferência --");
-        contaCorrente.exibirExtrato();
+    private static IConta encontrarConta(int numero) {
+        for (IConta c : contas) {
+            if (((Conta) c).getNumero() == numero) {
+                return c;
+            }
+        }
+        return null;
+    }
 
-        contaPoupanca.depositar(500.0);
-        contaPoupanca.sacar(100.0);
-        System.out.println("-- Extrato após operações na Conta Poupança --");
-        contaPoupanca.exibirExtrato();
+    private static void depositar() {
+        System.out.println("\n-- Depositar --");
+        System.out.print("Número da conta: ");
+        int numero = sc.nextInt();
+        sc.nextLine();
+        IConta conta = encontrarConta(numero);
+        if (conta == null) {
+            System.out.println("Conta não encontrada.");
+            return;
+        }
+        System.out.print("Valor a depositar: ");
+        double valor = sc.nextDouble();
+        sc.nextLine();
+        conta.depositar(valor);
+        System.out.println("Depósito realizado com sucesso.");
+    }
 
-        System.out.println("\n-- Extratos de todas as contas do cliente --");
-        cliente.exibirExtratos();
+    private static void sacar() {
+        System.out.println("\n-- Sacar --");
+        System.out.print("Número da conta: ");
+        int numero = sc.nextInt();
+        sc.nextLine();
+        IConta conta = encontrarConta(numero);
+        if (conta == null) {
+            System.out.println("Conta não encontrada.");
+            return;
+        }
+        System.out.print("Valor a sacar: ");
+        double valor = sc.nextDouble();
+        sc.nextLine();
+        try {
+            conta.sacar(valor);
+            System.out.println("Saque realizado com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void transferir() {
+        System.out.println("\n-- Transferir --");
+        System.out.print("Número da conta de origem: ");
+        int origemNum = sc.nextInt();
+        sc.nextLine();
+        IConta origem = encontrarConta(origemNum);
+        if (origem == null) {
+            System.out.println("Conta de origem não encontrada.");
+            return;
+        }
+        System.out.print("Número da conta de destino: ");
+        int destinoNum = sc.nextInt();
+        sc.nextLine();
+        IConta destino = encontrarConta(destinoNum);
+        if (destino == null) {
+            System.out.println("Conta de destino não encontrada.");
+            return;
+        }
+        System.out.print("Valor a transferir: ");
+        double valor = sc.nextDouble();
+        sc.nextLine();
+        try {
+            origem.transferir(valor, destino);
+            System.out.println("Transferência realizada com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void exibirExtratos() {
+        System.out.println("\n-- Extratos de todas as contas --");
+        contas.forEach(IConta::exibirExtrato);
     }
 }
