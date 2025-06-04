@@ -57,7 +57,7 @@ public class Main {
         System.out.print("Tipo de conta (1 - Corrente, 2 - Poupança): ");
         int tipo = sc.nextInt();
         sc.nextLine();
-        IConta conta;
+        Conta conta;
         if (tipo == 1) {
             conta = new ContaCorrente();
         } else if (tipo == 2) {
@@ -67,7 +67,7 @@ public class Main {
             return;
         }
         contas.add(conta);
-        Conta c = (Conta) conta;
+        Conta c = conta;
         System.out.println("Conta criada com sucesso! Agência: " + c.getAgencia() + ", Número: " + c.getNumero());
     }
 
