@@ -93,8 +93,11 @@ public class Main {
         System.out.print("Valor a depositar: ");
         double valor = sc.nextDouble();
         sc.nextLine();
-        conta.depositar(valor);
-        System.out.println("Depósito realizado com sucesso.");
+        try {conta.depositar(valor);
+            System.out.println("Depósito realizado com sucesso.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void sacar() {

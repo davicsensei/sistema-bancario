@@ -10,6 +10,9 @@ public class Cliente {
     private List<IConta> contas = new ArrayList<>();
 
     public Cliente(String nome, String cpf) {
+        if (nome == null || nome.isBlank() || cpf == null || cpf.isBlank()){
+            throw new IllegalArgumentException("Nome e CPF são obrigatórios.");
+        }
         this.nome = nome;
         this.cpf = cpf;
     }

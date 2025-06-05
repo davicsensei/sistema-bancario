@@ -18,6 +18,8 @@ public abstract class Conta implements IConta {
     public void depositar(double valor) {
         if (valor > 0) {
             saldo += valor;
+        } else {
+            throw new IllegalArgumentException("O valor do depósito deve ser positivo");
         }
     }
     @Override
