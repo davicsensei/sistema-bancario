@@ -73,7 +73,7 @@ public class Main {
 
     private static IConta encontrarConta(int numero) {
         for (IConta c : contas) {
-            if (((Conta) c).getNumero() == numero) {
+            if (c.getNumero() == numero) {
                 return c;
             }
         }

@@ -48,6 +48,7 @@ public abstract class Conta implements IConta {
         return agencia;
     }
 
+    @Override
     public int getNumero() {
         return numero;
     }
