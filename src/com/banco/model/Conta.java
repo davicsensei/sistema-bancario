@@ -7,7 +7,7 @@ public abstract class Conta implements IConta {
 
     private int agencia;
     private  int numero;
-    private double saldo;
+    protected double saldo;
 
     public Conta(){
         this.agencia = Conta.AGENCIA_PADRAO;
